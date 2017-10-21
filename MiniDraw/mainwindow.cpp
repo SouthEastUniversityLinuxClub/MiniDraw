@@ -69,6 +69,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionLine_triggered()
 {
+    if(scene->getType()=="Text")//由文字状态切换到其他状态需要设为镂空
+    {
+        on_actionHollow_triggered();
+    }
     scene->setType(QString("Line"));
     status->setText("Brush Color: "+brush->color().name()+"\t"+"Line\t"+pen->color().name()+"\t\t"+styles[QString::number(pen->style()).toInt()]+"\t"+QString::number(pen->widthF())+"px");
     scene->setSceneRect(0,0,view->width(),view->height());
@@ -77,6 +81,10 @@ void MainWindow::on_actionLine_triggered()
 
 void MainWindow::on_actionRectangle_triggered()
 {
+    if(scene->getType()=="Text")//由文字状态切换到其他状态需要设为镂空
+    {
+        on_actionHollow_triggered();
+    }
     scene->setType(QString("Rectangle"));
     status->setText("Brush Color: "+brush->color().name()+"\t"+"Rectangle\t"+pen->color().name()+"\t\t"+styles[QString::number(pen->style()).toInt()]+"\t"+QString::number(pen->widthF())+"px");
     scene->setSceneRect(0,0,view->width(),view->height());
@@ -85,6 +93,10 @@ void MainWindow::on_actionRectangle_triggered()
 
 void MainWindow::on_actionEllipse_triggered()
 {
+    if(scene->getType()=="Text")
+    {
+        on_actionHollow_triggered();
+    }
     scene->setType(QString("Ellipse"));
     status->setText("Brush Color: "+brush->color().name()+"\t"+"Ellipse\t"+pen->color().name()+"\t\t"+styles[QString::number(pen->style()).toInt()]+"\t"+QString::number(pen->widthF())+"px");
     scene->setSceneRect(0,0,view->width(),view->height());
@@ -93,6 +105,10 @@ void MainWindow::on_actionEllipse_triggered()
 
 void MainWindow::on_actionPolygon_triggered()
 {
+    if(scene->getType()=="Text")
+    {
+        on_actionHollow_triggered();
+    }
     scene->setType(QString("Polygon"));
     status->setText("Brush Color: "+brush->color().name()+"\t"+"Polygon\t"+pen->color().name()+"\t\t"+styles[QString::number(pen->style()).toInt()]+"\t"+QString::number(pen->widthF())+"px");
     scene->setSceneRect(0,0,view->width(),view->height());
@@ -101,6 +117,10 @@ void MainWindow::on_actionPolygon_triggered()
 
 void MainWindow::on_actionFree_triggered()
 {
+    if(scene->getType()=="Text")
+    {
+        on_actionHollow_triggered();
+    }
     scene->setType(QString("Free"));
     status->setText("Brush Color: "+brush->color().name()+"\t"+"Free\t"+pen->color().name()+"\t\t"+styles[QString::number(pen->style()).toInt()]+"\t"+QString::number(pen->widthF())+"px");
     scene->setSceneRect(0,0,view->width(),view->height());
@@ -210,13 +230,17 @@ void MainWindow::on_actionSave_As_triggered()
     QTime now;
     do{
         now=QTime::currentTime();
-    }while (n.msecsTo(now)<=1000);
+    }while (n.msecsTo(now)<=1000);//等待一秒以防止抓取到其它窗口
 
     screen->grabWindow(view->winId()).save(filePath);
 }
 
 void MainWindow::on_actionEraser_triggered()
 {
+    if(scene->getType()=="Text")//由文字状态切换到其他状态需要设为镂空
+    {
+        on_actionHollow_triggered();
+    }
     scene->setType(QString("Free"));
     pen->setStyle(Qt::SolidLine);
     pen->setColor(*(new QColor("white")));
@@ -235,7 +259,7 @@ void MainWindow::on_actionText_triggered()
     QString text = QInputDialog::getText(this,tr("Input"),tr("Enter: "),QLineEdit::Normal,"",&ok);
     scene->setText(text);
     this->setMouseTracking(false);
-    if(brush->style()==Qt::NoBrush)
+    if(brush->style()==Qt::NoBrush)//如果现在是镂空状态，那么设置成黑色填充状态
     {
         on_actionHollow_triggered();
     }

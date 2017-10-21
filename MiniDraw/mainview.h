@@ -10,9 +10,9 @@ public:
     MainView(MainScene* scene);
 
 protected:
-    void mousePressEvent(QMouseEvent* event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent* event);//将鼠标点击事件传给MainScene* scene
+    void mouseMoveEvent(QMouseEvent *event);//将鼠标移动事件传给MainScene* scene
+    void mouseReleaseEvent(QMouseEvent *event);//将鼠标释放事件传给MainScene* scene
 private:
     MainScene* scene;
 };

@@ -11,9 +11,9 @@ MainScene::MainScene()
 
 void MainScene::setType(QString t)
 {
-    if(type=="Free"&&pen->color()==QColor("white"))
+    if(type=="Free"&&pen->color()==QColor("white"))//之前是橡皮擦
     {
-        pen->setColor(QColor("black"));
+        pen->setColor(QColor("black"));//把画笔颜色设置成黑色
     }
     this->type = t;
 }
@@ -62,8 +62,8 @@ void MainScene::press(QMouseEvent *event)
         QGraphicsLineItem* lineItem = new QGraphicsLineItem();
         lineItem->setLine(start.x(),start.y(),end.x(),end.y());
         lineItem->setPen(*pen);
-        items.push_back(lineItem);
-        group->addToGroup(lineItem);
+        items.push_back(lineItem);//新建对象放入Qvector
+        group->addToGroup(lineItem);//加入组来决定先后顺序
     }
     if(type=="Rectangle")
     {
@@ -71,8 +71,8 @@ void MainScene::press(QMouseEvent *event)
         rectItem->setRect(*(new QRect(start,end)));
         rectItem->setPen(*pen);
         rectItem->setBrush(*brush);
-        items.push_back(rectItem);
-        group->addToGroup(rectItem);
+        items.push_back(rectItem);//新建对象放入Qvector
+        group->addToGroup(rectItem);//加入组来决定先后顺序
     }
     if(type=="Ellipse")
     {
@@ -80,12 +80,12 @@ void MainScene::press(QMouseEvent *event)
         ellipseItem->setRect(*(new QRect(start,end)));
         ellipseItem->setPen(*pen);
         ellipseItem->setBrush(*brush);
-        items.push_back(ellipseItem);
-        group->addToGroup(ellipseItem);
+        items.push_back(ellipseItem);//新建对象放入Qvector
+        group->addToGroup(ellipseItem);//加入组来决定先后顺序
     }
     if(type=="Polygon")
     {
-        if(event->button()==Qt::LeftButton)
+        if(event->button()==Qt::LeftButton)//点击左键先画线
         {
             if(polygonPoints.isEmpty())
             {
@@ -108,7 +108,7 @@ void MainScene::press(QMouseEvent *event)
                 update(rect);
             }
         }
-        if(event->button()==Qt::RightButton)
+        if(event->button()==Qt::RightButton)//点击右键删除之前的线并改成新的多边形
         {
             int initialCount = polygonTemp.count();
             for(int i=0;i<initialCount;i++)
@@ -152,7 +152,7 @@ void MainScene::press(QMouseEvent *event)
     }
 }
 
-void MainScene::moving(QMouseEvent *event)
+void MainScene::moving(QMouseEvent *event)//鼠标移动时不断刷新以预览
 {
     end = event->pos();
     if(type=="Line"&&!items.isEmpty())
@@ -184,7 +184,7 @@ void MainScene::moving(QMouseEvent *event)
     }
 }
 
-void MainScene::release(QMouseEvent *event)
+void MainScene::release(QMouseEvent *event)//鼠标释放时彻底成型
 {
     draw_status = false;
     end = event->pos();
